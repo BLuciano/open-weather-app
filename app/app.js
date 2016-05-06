@@ -1,8 +1,16 @@
-angular.module('mapApp', ['ngRoute'])
+angular.module('mapApp', ['ngRoute', 'ngAnimate'])
   .value('owmCities', ['New York', 'Dallas', 'Chicago'])
-  .run(function($rootScope, $location) {
+  .run(function($rootScope, $location, $timeout) {
     $rootScope.$on('$routeChangeError', function() {
-        $location.path('/error');
+      $location.path('/error');
+    });
+    $rootScope.$on('$routeChangeStart', function(){
+      $rootScope.isLoading = true;
+    });
+    $rootScope.$on('$routeChangeSuccess', function(){
+      $timeout(function(){
+        $rootScope.isLoading = false;
+      }, 1000);
     });
   })
   .config(['$routeProvider', function($routeProvider){
